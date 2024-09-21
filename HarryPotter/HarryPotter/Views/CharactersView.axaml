@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+			 xmlns:fa="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:views="clr-namespace:HarryPotter.Views"
+			 xmlns:m="clr-namespace:HarryPotter.Models"
+			 mc:Ignorable="d"
+			 d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HarryPotter.Views.CharactersView">
+
+	<Grid Margin="0, 0, 0, 5">
+		<ListBox Background="Transparent" ItemsSource="{ReflectionBinding Entities}">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel ItemWidth="220" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+
+			<ListBox.ItemTemplate>
+				<DataTemplate DataType="m:Character">
+					<Border BorderBrush="Gray" BorderThickness="2">
+						<DockPanel>
+							<DockPanel.Styles>
+								<Style Selector="Expander:down /template/ Border#ExpanderContent">
+									<Setter Property="Background" Value="White" />
+									<Setter Property="BorderThickness" Value="0" />
+									<Setter Property="Padding" Value="0" />
+								</Style>
+								
+								<Style Selector="Expander /template/ ToggleButton#ExpanderHeader">
+									<Setter Property="BorderThickness" Value="0, 1, 0, 0" />
+								</Style>
+							</DockPanel.Styles>
+							
+							<TextBlock DockPanel.Dock="Top"
+									   Padding="5"
+									   FontWeight="DemiBold"
+									   TextAlignment="Center" 
+									   Background="LightBlue"
+									   x:DataType="m:Character"
+									   Text="{Binding Name}" />
+
+							<Grid DockPanel.Dock="Bottom">
+								<Expander Name="CharacterInfoExpander"
+										  Header="Information"		  
+										  HorizontalAlignment="Stretch"
+										  CornerRadius="0">
+									<DataGrid FontSize="10"
+											  MaxHeight="150"
+											  Background="Transparent"
+											  IsReadOnly="True"
+											  HeadersVisibility="None"
+											  GridLinesVisibility="All"
+											  AutoGenerateColumns="True"
+											  x:DataType="m:Character"
+											  ItemsSource="{Binding Properties}">
+										<DataGrid.Styles>
+											<Style Selector="DataGridRow DataGridCell">
+												<Setter Property="FontSize" Value="12"></Setter>
+											</Style>
+										</DataGrid.Styles>
+									</DataGrid>
+								</Expander>
+
+								<Button fa:Attached.Icon="fa-heart"
+										Name="LikeButton"
+										FontSize="19"
+										Margin="0, 0, 45, 0"
+										Background="Transparent"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Right"
+										IsVisible="{Binding !#CharacterInfoExpander.IsExpanded}"
+										Command="{ReflectionBinding $parent[ListBox].DataContext.SwitchEntityLikeCommand}"
+										CommandParameter="{Binding $self.DataContext}">
+									<i:Interaction.Behaviors>
+										<ia:DataTriggerBehavior Binding="{Binding IsLiked}"
+																ComparisonCondition="Equal"
+																Value="True">
+											<ia:ChangePropertyAction TargetObject="LikeButton"
+																	 PropertyName="Foreground"
+																	 Value="LightPink" />
+										</ia:DataTriggerBehavior>
+										<ia:DataTriggerBehavior Binding="{Binding IsLiked}"
+																ComparisonCondition="NotEqual"
+																Value="True">
+											<ia:ChangePropertyAction TargetObject="LikeButton"
+																	 PropertyName="Foreground"
+																	 Value="LightGray" />
+										</ia:DataTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</Button>
+							</Grid>
+
+							<Border DockPanel.Dock="Top"
+									BorderBrush="Gray"
+									BorderThickness="2"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center"
+									Margin="5">			
+								<Image MaxHeight="150"
+									   Source="{ReflectionBinding BitmapImage}" />
+							</Border>
+						</DockPanel>
+					</Border>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<views:LoadEntitiesView Background="White"
+								IsVisible="{ReflectionBinding !IsEntitiesLoaded}" />
+	</Grid>
+	
+</UserControl>

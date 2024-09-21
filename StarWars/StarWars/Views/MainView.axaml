@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:StarWars.ViewModels"
+			 xmlns:views="clr-namespace:StarWars.Views"
+             mc:Ignorable="d"
+			 d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="StarWars.Views.MainView"
+             x:DataType="vm:MainViewModel">
+	
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+	<TabControl>
+		<TabItem Header="Films">
+			<views:EntitiesView DataContext="{ReflectionBinding FilmsViewModel}" />
+		</TabItem>
+		<TabItem Header="People">
+			<views:EntitiesView DataContext="{ReflectionBinding CharactersViewModel}" />
+		</TabItem>
+		<TabItem Header="Planets">
+			<views:EntitiesView DataContext="{ReflectionBinding PlanetsViewModel}" />
+		</TabItem>
+		<TabItem Header="Species">
+			<views:EntitiesView DataContext="{ReflectionBinding SpeciesViewModel}" />
+		</TabItem>
+		<TabItem Header="Starships">
+			<views:EntitiesView DataContext="{ReflectionBinding StarshipsViewModel}" />
+		</TabItem>
+		<TabItem Header="Vehicles">
+			<views:EntitiesView DataContext="{ReflectionBinding VehiclesViewModel}" />
+		</TabItem>
+		<TabItem Header="Favorites">
+			<views:FavoriteEntitiesView DataContext="{ReflectionBinding FavoriteEntitiesViewModel}" />
+		</TabItem>
+	</TabControl>
+	
+</UserControl>

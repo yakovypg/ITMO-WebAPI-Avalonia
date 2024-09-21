@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+			 xmlns:vm="clr-namespace:IPManager.ViewModels"
+			 mc:Ignorable="d"
+			 d:DesignWidth="600" d:DesignHeight="380"
+             x:Class="IPManager.Views.HomeView"
+			 x:DataType="vm:HomeViewModel">
+	<Design.DataContext>
+		<vm:HomeViewModel />
+	</Design.DataContext>
+
+	<Grid ColumnDefinitions="*, Auto, 2*">
+		<GridSplitter Grid.Column="1"
+					  Width="2"
+					  MinWidth="0"
+					  Background="Transparent" />
+
+		<DockPanel Grid.Column="0">
+			<DockPanel DockPanel.Dock="Top">
+				<Grid DockPanel.Dock="Top"
+					  HorizontalAlignment="Center">
+					<Grid.Styles>
+						<Style Selector="Grid > img|Icon">
+							<Setter Property="HorizontalAlignment" Value="Center" />
+							<Setter Property="VerticalAlignment" Value="Center" />
+						</Style>
+					</Grid.Styles>
+
+					<img:Icon Value="fa-star"
+							  Foreground="Black"
+							  Opacity="0.7"
+							  FontSize="32" />
+
+					<img:Icon Value="fa-star"
+							  Foreground="Orange"
+							  FontSize="22"/>
+				</Grid>
+
+				<TextBlock DockPanel.Dock="Bottom"
+						   HorizontalAlignment="Center"
+						   Text="ваши избранные" />
+			</DockPanel>
+			
+			<ListBox DockPanel.Dock="Bottom"
+					 Background="Transparent"
+					 SelectedItem="{Binding SelectedIp}"
+					 ItemsSource="{Binding FavoriteIps}" />
+		</DockPanel>
+
+		<Grid Grid.Column="2"
+			  Margin="5, 0, 0, 0"
+			  RowDefinitions="Auto, *, 65">
+			<StackPanel Grid.Row="0" Orientation="Vertical">
+				<StackPanel.Styles>
+					<Style Selector="TextBlock">
+						<Setter Property="FontSize" Value="24" />
+						<Setter Property="HorizontalAlignment" Value="Center" />
+					</Style>
+				</StackPanel.Styles>
+				
+				<TextBlock Text="Ваш IP" />
+				<TextBlock Text="{Binding UserIp}" />
+			</StackPanel>
+
+			<Grid Grid.Row="1"
+				  Margin="90, 25, 90, 15"
+				  RowDefinitions="15, *">
+				<TextBlock Grid.Row="0"
+						   Text="Details"
+						   HorizontalAlignment="Center"
+						   Margin="0, 0, 0, 5"/>
+
+				<TextBox Grid.Row="1"
+						 BorderThickness="2"
+						 BorderBrush="Gray"
+						 Background="Transparent"
+						 VerticalAlignment="Stretch"
+						 HorizontalAlignment="Stretch"
+						 IsReadOnly="True"
+						 Text="{Binding IpInfo}" />
+			</Grid>
+
+			<Grid Grid.Row="2">
+				<Grid HorizontalAlignment="Right" RowDefinitions="Auto, *">
+					<TextBlock Text="главный экран" HorizontalAlignment="Center" />
+					<Button Grid.Row="1"
+							FontSize="32"
+							Opacity="0.8"
+							HorizontalAlignment="Center"
+							Background="Transparent"
+							img:Attached.Icon="fa-search"
+							Command="{Binding ShowSearchPageCommand}" />
+				</Grid>
+			</Grid>
+		</Grid>
+	</Grid>
+	
+</UserControl>

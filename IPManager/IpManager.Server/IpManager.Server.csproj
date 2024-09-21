@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Import Project="..\IpManager.SharedSettings\IpManager.SharedSettings.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="Itmo.Dev.Platform.Postgres" Version="1.1.89" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IpManager.Serialization\IpManager.Serialization.csproj" />
+  </ItemGroup>
+
+</Project>

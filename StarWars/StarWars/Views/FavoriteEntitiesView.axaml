@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d"
+			 d:DesignWidth="800" d:DesignHeight="450"
+			 x:CompileBindings="False"
+             x:Class="StarWars.Views.FavoriteEntitiesView">
+
+	<Panel>
+		<DockPanel>
+			<Grid DockPanel.Dock="Bottom"
+				  HorizontalAlignment="Center"
+				  Margin="10">
+				<Grid.Styles>
+					<Style Selector="Button">
+						<Setter Property="HorizontalContentAlignment" Value="Center" />
+						<Setter Property="HorizontalAlignment" Value="Stretch" />
+						<Setter Property="Width" Value="90" />
+					</Style>
+				</Grid.Styles>
+
+				<Button Content="Load"
+						Command="{Binding LoadFavoriteEntitiesCommand}" />
+			</Grid>
+
+			<ListBox DockPanel.Dock="Top"
+					 Name="FavoriteEntitiesContainer"
+					 Background="Transparent"
+					 ItemsSource="{Binding Entities}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<DockPanel>
+							<Border DockPanel.Dock="Left"
+									BorderThickness="2"
+									BorderBrush="DarkGray"
+									VerticalAlignment="Top"
+									MaxHeight="48">
+								<img:Icon Value="{Binding IconName}"
+										  FontSize="32"
+										  Margin="6"
+										  Opacity="0.5"
+										  Foreground="DarkBlue" />
+							</Border>
+
+							<Expander DockPanel.Dock="Right"
+									  Margin="5, 0, 0, 0"
+									  HorizontalAlignment="Stretch"
+									  Header="{Binding Presenter}">
+								<Grid>
+									<DataGrid Height="200"
+											  IsReadOnly="True"
+											  GridLinesVisibility="All"
+											  AutoGenerateColumns="True"
+											  BorderThickness="1"
+											  BorderBrush="DarkGray"
+											  ItemsSource="{Binding FieldValues}" />
+
+									<DockPanel Margin="3"
+										  VerticalAlignment="Top"
+										  HorizontalAlignment="Right"
+										  IsEnabled="{Binding IsReady}">
+										<Button DockPanel.Dock="Right"
+												Content="Load all data"
+												FontSize="11.5"
+												Command="{ReflectionBinding #FavoriteEntitiesContainer.DataContext.LoadLazyEntityDataCommand}"
+												CommandParameter="{Binding Self}" />
+
+										<Button DockPanel.Dock="Right"
+												Name="SwitchEntityIsFavoriteButton"
+												VerticalAlignment="Stretch"
+												FontSize="14"
+												Opacity="0.7"
+												Margin="0, 0, 5, 0"
+												img:Attached.Icon="fa-star"
+												Command="{Binding #FavoriteEntitiesContainer.DataContext.SwitchBelongingToFavoriteEntitiesCommand}"
+												CommandParameter="{Binding Self}">
+											<i:Interaction.Behaviors>
+												<ia:DataTriggerBehavior Binding="{Binding IsFavorite}"
+																		ComparisonCondition="Equal"
+																		Value="True">
+													<ia:ChangePropertyAction TargetObject="SwitchEntityIsFavoriteButton"
+																			 PropertyName="Foreground"
+																			 Value="DarkOrange" />
+												</ia:DataTriggerBehavior>
+
+												<ia:DataTriggerBehavior Binding="{Binding IsFavorite}"
+																		ComparisonCondition="NotEqual"
+																		Value="True">
+													<ia:ChangePropertyAction TargetObject="SwitchEntityIsFavoriteButton"
+																			 PropertyName="Foreground" Value="Black" />
+												</ia:DataTriggerBehavior>
+											</i:Interaction.Behaviors>
+										</Button>
+									</DockPanel>
+								</Grid>
+							</Expander>
+						</DockPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</DockPanel>
+
+		<Grid Background="White" IsVisible="{Binding IsDataLoading}">
+			<img:Icon Value="fa-spinner"
+					  Animation="Spin"
+					  FontSize="74"
+					  Opacity="0.6"
+					  Foreground="DarkBlue" />
+		</Grid>
+	</Panel>
+	
+</UserControl>

@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:vm="clr-namespace:HarryPotter.ViewModels"
+			 xmlns:pages="clr-namespace:HarryPotter.Views.Pages"
+             mc:Ignorable="d"
+			 d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HarryPotter.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+	<DockPanel Margin="5">
+		<DockPanel DockPanel.Dock="Bottom"
+				   HorizontalAlignment="Center">
+			<DockPanel.Styles>
+				<Style Selector="Button">
+					<Setter Property="Height" Value="35" />
+					<Setter Property="Width" Value="35" />
+					<Setter Property="CornerRadius" Value="100" />
+					<Setter Property="VerticalContentAlignment" Value="Center" />
+					<Setter Property="HorizontalContentAlignment" Value="Center" />
+				</Style>
+			</DockPanel.Styles>
+			
+			<Button DockPanel.Dock="Left"
+					Content="&lt;"
+					Command="{Binding ShowPreviousPageCommand}"
+					CommandParameter="{Binding #PagesCarousel.ItemCount}" />
+
+			<Button DockPanel.Dock="Right"
+					Content="&gt;"
+					Command="{Binding ShowNextPageCommand}"
+					CommandParameter="{Binding #PagesCarousel.ItemCount}" />
+
+			<Border BorderBrush="DarkGray"
+					BorderThickness="2"
+					CornerRadius="100"
+					MinWidth="180"
+					Padding="15, 0"
+					Margin="15, 0">
+				<TextBlock VerticalAlignment="Center"
+						   HorizontalAlignment="Center"
+						   Text="{Binding SelectedPageTitle}" />
+			</Border>
+		</DockPanel>
+		
+		<Carousel DockPanel.Dock="Top"
+				  Name="PagesCarousel"
+				  SelectedIndex="{Binding SelectedPageIndex, Mode=OneWay}">
+			<i:Interaction.Behaviors>
+				<ia:EventTriggerBehavior EventName="SelectionChanged">
+					<ia:InvokeCommandAction Command="{Binding ChangePageTitleCommand}" PassEventArgsToCommand="True" />
+				</ia:EventTriggerBehavior>
+			</i:Interaction.Behaviors>
+
+			<Carousel.PageTransition>
+				<CompositePageTransition>
+					<PageSlide Duration="0:00:01.000" Orientation="Horizontal" />
+				</CompositePageTransition>
+			</Carousel.PageTransition>
+
+			<Carousel.Items>
+				<pages:LikedCharactersPageView DataContext="{Binding LikedCharactersViewModel}" />
+				<pages:CharactersPageView DataContext="{Binding CharactersViewModel}" />
+				<pages:HogwartsStudentsPageView DataContext="{Binding HogwartsStudentsViewModel}" />
+				<pages:HogwartsStaffPageView DataContext="{Binding HogwartsStaffViewModel}" />
+				<pages:CharactersInHousePageView DataContext="{Binding CharactersInHouseViewModel}" />
+				<pages:SpellsPageView DataContext="{Binding SpellsViewModel}" />
+			</Carousel.Items>
+		</Carousel>
+	</DockPanel>
+	
+</UserControl>

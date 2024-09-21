@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+			 mc:Ignorable="d"
+			 d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HarryPotter.Views.LoadEntitiesView">
+
+	<Grid>
+		<Border BorderBrush="Gray"
+				BorderThickness="2"
+				Width="210"
+				Height="210"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center">
+			<Border BorderBrush="Gold" BorderThickness="3">
+				<DockPanel Margin="8">
+					<Grid DockPanel.Dock="Bottom" Margin="0, 5, 0, 0">
+						<Button Content="Load data"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								IsVisible="{ReflectionBinding !IsEntitiesLoading}"
+								Command="{ReflectionBinding LoadEntitiesCommand}" />
+						
+						<ProgressBar IsIndeterminate="True"
+									 Height="20"
+									 Opacity="0.85"
+									 Margin="10, 10, 10, 0"
+									 MinWidth="0"
+									 IsVisible="{ReflectionBinding IsEntitiesLoading}" />
+					</Grid>
+
+					<TextBlock DockPanel.Dock="Top"
+							   FontSize="16"
+							   Margin="5, 0"
+							   TextWrapping="Wrap"
+							   Text="To display entities, you first need to load them" />
+
+					<fa:Icon Value="fa-ghost"
+							 FontSize="72"
+							 Opacity="0.9"
+							 Foreground="Brown" />
+				</DockPanel>
+			</Border>
+		</Border>
+	</Grid>
+	
+</UserControl>

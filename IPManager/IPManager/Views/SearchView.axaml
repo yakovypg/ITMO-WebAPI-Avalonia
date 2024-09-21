@@ -1,0 +1,135 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+			 xmlns:m="clr-namespace:IPManager.Models"
+			 xmlns:vm="clr-namespace:IPManager.ViewModels"
+			 mc:Ignorable="d"
+			 d:DesignWidth="600" d:DesignHeight="380"
+             x:Class="IPManager.Views.SearchView"
+			 x:DataType="vm:SearchViewModel">
+	<Design.DataContext>
+		<vm:HomeViewModel />
+	</Design.DataContext>
+
+	<Grid ColumnDefinitions="*, Auto, 2*">
+		<GridSplitter Grid.Column="1"
+					  Width="2"
+					  MinWidth="0"
+					  Background="Transparent" />
+
+		<ListBox Grid.Column="0"
+				 Background="Transparent"
+				 BorderBrush="Gray"
+				 BorderThickness="1"
+				 SelectedItem="{Binding SelectedOrganization}"
+				 ItemsSource="{Binding Organizations}">
+			<ListBox.DataTemplates>
+				<DataTemplate x:DataType="m:Organization">
+					<DockPanel>
+						<Ellipse DockPanel.Dock="Left"
+								 Margin="0, 0, 8, 0"
+								 Width="7"
+								 Height="7"
+								 Opacity="0.8"
+								 Fill="Black" />
+						
+						<TextBlock DockPanel.Dock="Right"
+								   Text="{Binding Name}" />
+					</DockPanel>
+				</DataTemplate>
+			</ListBox.DataTemplates>
+		</ListBox>
+
+		<Grid Grid.Column="2"
+			  Margin="5, 0, 0, 0"
+			  RowDefinitions="53, *, 63">
+			<Grid Grid.Row="0"
+				  Margin="0, 20, 0, 0"
+				  ColumnDefinitions="*, 10*, 5, Auto,*">
+				<TextBox Grid.Column="1"
+						 Name="IpTextBox"
+						 MinWidth="0"
+						 TextAlignment="Center"
+						 Watermark="IP / Org. name">
+					<TextBox.KeyBindings>
+						<KeyBinding Gesture="Enter"
+									Command="{Binding FindEntityCommand}"
+									CommandParameter="{Binding #IpTextBox.Text}" />
+					</TextBox.KeyBindings>
+				</TextBox>
+
+				<Button Grid.Column="3"
+						Width="33"
+						Height="33"
+						Background="Transparent"
+						Command="{Binding FindEntityCommand}"
+						CommandParameter="{Binding #IpTextBox.Text}">
+					<Grid>
+						<Ellipse Fill="Black" Width="32" Height="32" />
+						<Ellipse Fill="Orange" Width="29" Height="29" />
+						<img:Icon Value="fa-search" />
+					</Grid>
+				</Button>
+			</Grid>
+
+			<Grid Grid.Row="1"
+				  Margin="90, 25, 90, 0"
+				  RowDefinitions="*, 61">
+				<TextBox Grid.Row="0"
+						 BorderThickness="2"
+						 BorderBrush="Gray"
+						 Background="Transparent"
+						 VerticalAlignment="Stretch"
+						 HorizontalAlignment="Stretch"
+						 Margin="0, 0, 0, 5"
+						 IsReadOnly="True"
+						 Text="{Binding IpInfo}" />
+
+				<DockPanel Grid.Row="1">
+					<Button DockPanel.Dock="Top"
+							Background="Transparent"
+							HorizontalAlignment="Center"
+							Command="{Binding AddIpToFavoritesCommand}"
+							CommandParameter="{Binding CurrentIp}">
+						<Button.Styles>
+							<Style Selector="Grid > img|Icon">
+								<Setter Property="HorizontalAlignment" Value="Center" />
+								<Setter Property="VerticalAlignment" Value="Center" />
+							</Style>
+						</Button.Styles>
+					
+						<Grid>
+							<img:Icon Value="fa-star"
+									  Foreground="Black"
+									  Opacity="0.7"
+									  FontSize="32" />
+						
+							<img:Icon Value="fa-star"
+									  Foreground="White"
+									  FontSize="22"/>
+						</Grid>
+					</Button>
+				
+					<TextBlock DockPanel.Dock="Bottom"
+							   HorizontalAlignment="Center"
+							   Text="добавить IP в избранное" />
+				</DockPanel>
+			</Grid>
+
+			<Grid Grid.Row="2">
+				<Grid HorizontalAlignment="Right" RowDefinitions="Auto, *">
+					<TextBlock Text="домой" HorizontalAlignment="Center" />
+					<Button Grid.Row="1"
+							FontSize="32"
+							Opacity="0.8"
+							HorizontalAlignment="Center"
+							Background="Transparent"
+							img:Attached.Icon="fa-house"
+							Command="{Binding ShowHomePageCommand}" />
+				</Grid>
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>
